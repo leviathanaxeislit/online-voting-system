@@ -5,25 +5,29 @@ require('dotenv').config()
 const cookieParser = require('cookie-parser');
 const userRouter = require('./routers/usersroute')
 
-const port = process.env.PORT
-const app = express()
-//app.use(helmet());
+const port = process.env.PORT;
+const app = express();
+
+// Uncomment helmet if needed and ensure it's configured properly
+// app.use(helmet());
+
 app.use(cookieParser());
 app.use(express.json());
 
-app.use(cors({origin: true
+// Configure CORS with specific origin and credentials
+app.use(cors({
+  origin: 'https://onlinevotingsystemclient.vercel.app', // Client origin
+  credentials: true, // Allow credentials (cookies, authorization headers, TLS client certificates)
 }));
 
-
-const db = require("./db")
+const db = require("./db");
 
 app.get("/", (req, res) => {
-	res.send("Hello World!")
-})
+  res.send("Hello World!");
+});
 
-app.use('/api/user',userRouter)
+app.use('/api/user', userRouter);
 
-
-app.listen(port,()=>{
-    console.log(`Server is running on http://localhost:${port}`);
-})
+app.listen(port, () => {
+  console.log(`Server is running on http://localhost:${port}`);
+});
